@@ -44,13 +44,6 @@ const ColorSwatch = ({ color, locked, toggleLock, activeFormat }: ColorSwatchPro
     >
       <div className="absolute top-4 right-4 flex gap-2">
         <button
-          onClick={toggleLock}
-          className="bg-white/20 backdrop-blur-sm p-2 rounded-full hover:bg-white/30 transition-all duration-200"
-          aria-label={locked ? "Unlock color" : "Lock color"}
-        >
-          {locked ? <Lock size={20} /> : <Unlock size={20} />}
-        </button>
-        <button
           onClick={copyToClipboard}
           className="bg-white/20 backdrop-blur-sm p-2 rounded-full hover:bg-white/30 transition-all duration-200"
           aria-label="Copy color code"
@@ -59,21 +52,25 @@ const ColorSwatch = ({ color, locked, toggleLock, activeFormat }: ColorSwatchPro
         </button>
       </div>
       
-      {/* Lock icon overlay when hovering */}
-      {isHovered && !locked && (
-        <div 
-          className="absolute inset-0 flex items-center justify-center bg-black/20 cursor-pointer transition-all duration-200"
-          onClick={toggleLock}
-          aria-label="Lock this color"
-        >
-          <Lock size={48} className="opacity-80" />
-        </div>
-      )}
-      
       <div className="text-center">
         <h2 className="text-4xl font-bold mb-2">{displayColor}</h2>
         <p className="text-sm opacity-80">{activeFormat}</p>
       </div>
+      
+      {/* Lock button positioned below the hex value, ~75% down from the top */}
+      <button
+        onClick={toggleLock}
+        className={`absolute left-1/2 transform -translate-x-1/2 bottom-1/4 p-3 rounded-full 
+                   ${locked ? 'bg-white/30' : 'bg-white/10'} 
+                   backdrop-blur-sm hover:bg-white/30 transition-all duration-300 
+                   ${isHovered || locked ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}
+        aria-label={locked ? "Unlock color" : "Lock color"}
+      >
+        {locked ? 
+          <Lock size={24} className="animate-fade-in" /> : 
+          <Unlock size={24} className={isHovered ? "animate-fade-in" : ""} />
+        }
+      </button>
     </div>
   );
 };

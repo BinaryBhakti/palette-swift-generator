@@ -106,6 +106,14 @@ export default {
 						transform: 'translateY(10px)'
 					}
 				},
+				'slide-in': {
+					'0%': {
+						transform: 'translateY(100%)',
+					},
+					'100%': {
+						transform: 'translateY(0)',
+					}
+				},
 				shake: {
 					'0%, 100%': { transform: 'translateX(0)' },
 					'10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-3px)' },

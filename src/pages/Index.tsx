@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ColorSwatch from '@/components/ColorSwatch';
 import PaletteControls from '@/components/PaletteControls';
 import Header from '@/components/Header';
@@ -13,12 +13,20 @@ const Index = () => {
   const [lockedColors, setLockedColors] = useState<boolean[]>([]);
   const [activeFormat, setActiveFormat] = useState<ColorFormat>(ColorFormat.HEX);
   const [exportOpen, setExportOpen] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     generateNewPalette();
   }, []);
 
-  const generateNewPalette = () => {
+  const generateNewPalette = useCallback(() => {
+    if (isAnimating) return;
+    
+    setIsAnimating(true);
+    
+    // Save current colors before generating new ones
+    const previousColors = [...colors];
+    
     setColors(prevColors => {
       const newColors = [...prevColors];
       
@@ -34,7 +42,12 @@ const Index = () => {
         return lockedColors[index] ? color : randomColors[index];
       });
     });
-  };
+    
+    // Reset animation state after animation completes
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 500);
+  }, [colors, lockedColors, isAnimating]);
 
   const toggleLock = (index: number) => {
     setLockedColors(prevState => {
@@ -47,8 +60,19 @@ const Index = () => {
   const handleExport = () => {
     setExportOpen(true);
   };
-
-  const columnHeight = `calc(100vh)`;
+  
+  // Handle spacebar press to generate new palette
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        generateNewPalette();
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [generateNewPalette]);
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
@@ -57,16 +81,22 @@ const Index = () => {
       <div className="flex h-full">
         {colors.map((color, index) => (
           <div 
-            key={index} 
+            key={`${color}-${index}`}
             className="flex-1 transition-all duration-500"
-            style={{ height: columnHeight }}
           >
-            <ColorSwatch 
-              color={color}
-              locked={lockedColors[index]}
-              toggleLock={() => toggleLock(index)}
-              activeFormat={activeFormat}
-            />
+            <div 
+              className={`h-full w-full transform transition-all duration-500 ${isAnimating ? 'translate-y-full animate-[slide-in_0.5s_ease_forwards]' : ''}`}
+              style={{ 
+                animationDelay: `${index * 0.1}s`,
+              }}
+            >
+              <ColorSwatch 
+                color={color}
+                locked={lockedColors[index]}
+                toggleLock={() => toggleLock(index)}
+                activeFormat={activeFormat}
+              />
+            </div>
           </div>
         ))}
       </div>
