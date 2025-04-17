@@ -10,13 +10,17 @@ const DEFAULT_PALETTE_SIZE = 5;
 
 const Index = () => {
   const [colors, setColors] = useState<string[]>([]);
+  const [nextColors, setNextColors] = useState<string[]>([]);
   const [lockedColors, setLockedColors] = useState<boolean[]>([]);
   const [activeFormat, setActiveFormat] = useState<ColorFormat>(ColorFormat.HEX);
   const [exportOpen, setExportOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    generateNewPalette();
+    const initialColors = generateRandomPalette(DEFAULT_PALETTE_SIZE);
+    setColors(initialColors);
+    setNextColors(initialColors);
+    setLockedColors(Array(DEFAULT_PALETTE_SIZE).fill(false));
   }, []);
 
   const generateNewPalette = useCallback(() => {
@@ -24,29 +28,20 @@ const Index = () => {
     
     setIsAnimating(true);
     
-    // Save current colors before generating new ones
-    const previousColors = [...colors];
-    
-    setColors(prevColors => {
-      const newColors = [...prevColors];
-      
-      if (newColors.length === 0) {
-        setLockedColors(Array(DEFAULT_PALETTE_SIZE).fill(false));
-        return generateRandomPalette(DEFAULT_PALETTE_SIZE);
-      }
-      
-      const randomColors = generateRandomPalette(newColors.length);
-      
-      // Only change unlocked colors
-      return newColors.map((color, index) => {
-        return lockedColors[index] ? color : randomColors[index];
-      });
+    // Generate new colors but preserve locked ones
+    const randomColors = generateRandomPalette(colors.length);
+    const newColors = colors.map((color, idx) => {
+      return lockedColors[idx] ? color : randomColors[idx];
     });
     
-    // Reset animation state after animation completes
+    // Store the new colors that will slide up
+    setNextColors(newColors);
+    
+    // After animation completes, update the actual colors and reset animation
     setTimeout(() => {
+      setColors(newColors);
       setIsAnimating(false);
-    }, 500);
+    }, 600); // Slightly longer than animation duration
   }, [colors, lockedColors, isAnimating]);
 
   const toggleLock = (index: number) => {
@@ -82,16 +77,26 @@ const Index = () => {
         {colors.map((color, index) => (
           <div 
             key={`${color}-${index}`}
-            className="flex-1 transition-all duration-500"
+            className="flex-1 h-full relative overflow-hidden"
           >
+            {/* Current color swatch */}
             <div 
-              className={`h-full w-full transform transition-all duration-500 ${isAnimating ? 'translate-y-full animate-[slide-in_0.5s_ease_forwards]' : ''}`}
-              style={{ 
-                animationDelay: `${index * 0.1}s`,
-              }}
+              className={`absolute top-0 left-0 h-full w-full transition-transform duration-500 ease-in-out ${isAnimating && !lockedColors[index] ? '-translate-y-full' : 'translate-y-0'}`}
             >
               <ColorSwatch 
                 color={color}
+                locked={lockedColors[index]}
+                toggleLock={() => toggleLock(index)}
+                activeFormat={activeFormat}
+              />
+            </div>
+            
+            {/* Next color swatch - only shown during animation */}
+            <div 
+              className={`absolute top-full left-0 h-full w-full transition-transform duration-500 ease-in-out ${isAnimating && !lockedColors[index] ? '-translate-y-full' : 'translate-y-0'}`}
+            >
+              <ColorSwatch 
+                color={nextColors[index]}
                 locked={lockedColors[index]}
                 toggleLock={() => toggleLock(index)}
                 activeFormat={activeFormat}
