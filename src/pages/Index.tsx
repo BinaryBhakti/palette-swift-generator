@@ -28,20 +28,17 @@ const Index = () => {
     
     setIsAnimating(true);
     
-    // Generate new colors but preserve locked ones
     const randomColors = generateRandomPalette(colors.length);
     const newColors = colors.map((color, idx) => {
       return lockedColors[idx] ? color : randomColors[idx];
     });
     
-    // Store the new colors that will slide up
     setNextColors(newColors);
     
-    // After animation completes, update the actual colors and reset animation
     setTimeout(() => {
       setColors(newColors);
       setIsAnimating(false);
-    }, 600); // Slightly longer than animation duration
+    }, 800); // Increased duration to account for sequential animations
   }, [colors, lockedColors, isAnimating]);
 
   const toggleLock = (index: number) => {
@@ -81,7 +78,12 @@ const Index = () => {
           >
             {/* Current color swatch */}
             <div 
-              className={`absolute top-0 left-0 h-full w-full transition-transform duration-500 ease-in-out ${isAnimating && !lockedColors[index] ? '-translate-y-full' : 'translate-y-0'}`}
+              className={`absolute top-0 left-0 h-full w-full transition-transform duration-700 ease-in-out ${
+                isAnimating && !lockedColors[index] ? '-translate-y-full' : 'translate-y-0'
+              }`}
+              style={{
+                transitionDelay: `${index * 100}ms`
+              }}
             >
               <ColorSwatch 
                 color={color}
@@ -91,9 +93,14 @@ const Index = () => {
               />
             </div>
             
-            {/* Next color swatch - only shown during animation */}
+            {/* Next color swatch */}
             <div 
-              className={`absolute top-full left-0 h-full w-full transition-transform duration-500 ease-in-out ${isAnimating && !lockedColors[index] ? '-translate-y-full' : 'translate-y-0'}`}
+              className={`absolute top-full left-0 h-full w-full transition-transform duration-700 ease-in-out ${
+                isAnimating && !lockedColors[index] ? '-translate-y-full' : 'translate-y-0'
+              }`}
+              style={{
+                transitionDelay: `${index * 100}ms`
+              }}
             >
               <ColorSwatch 
                 color={nextColors[index]}
