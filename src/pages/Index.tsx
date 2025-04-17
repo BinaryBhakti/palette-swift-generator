@@ -24,9 +24,6 @@ const Index = () => {
     
     setIsAnimating(true);
     
-    // Save current colors before generating new ones
-    const previousColors = [...colors];
-    
     setColors(prevColors => {
       const newColors = [...prevColors];
       
@@ -47,7 +44,7 @@ const Index = () => {
     setTimeout(() => {
       setIsAnimating(false);
     }, 500);
-  }, [colors, lockedColors, isAnimating]);
+  }, [lockedColors, isAnimating]);
 
   const toggleLock = (index: number) => {
     setLockedColors(prevState => {
@@ -82,20 +79,40 @@ const Index = () => {
         {colors.map((color, index) => (
           <div 
             key={`${color}-${index}`}
-            className="flex-1 transition-all duration-500"
+            className="flex-1 transition-all duration-500 overflow-hidden"
           >
-            <div 
-              className={`h-full w-full transform transition-all duration-500 ${isAnimating ? 'translate-y-full animate-[slide-in_0.5s_ease_forwards]' : ''}`}
-              style={{ 
-                animationDelay: `${index * 0.1}s`,
-              }}
-            >
-              <ColorSwatch 
-                color={color}
-                locked={lockedColors[index]}
-                toggleLock={() => toggleLock(index)}
-                activeFormat={activeFormat}
-              />
+            {/* Create a wrapper for the slide animation */}
+            <div className="relative h-full w-full">
+              {/* Current color swatch that will slide up */}
+              <div 
+                className={`absolute top-0 left-0 h-full w-full transition-all duration-500 ease-in-out ${isAnimating && !lockedColors[index] ? '-translate-y-full' : 'translate-y-0'}`}
+                style={{ zIndex: 10 }}
+              >
+                <ColorSwatch 
+                  color={color}
+                  locked={lockedColors[index]}
+                  toggleLock={() => toggleLock(index)}
+                  activeFormat={activeFormat}
+                />
+              </div>
+              
+              {/* New color swatch that will slide up from below */}
+              {isAnimating && !lockedColors[index] && (
+                <div 
+                  className="absolute top-full left-0 h-full w-full transition-all duration-500 ease-in-out translate-y-0"
+                  style={{ 
+                    backgroundColor: color, 
+                    zIndex: 5 
+                  }}
+                >
+                  <ColorSwatch 
+                    color={color}
+                    locked={lockedColors[index]}
+                    toggleLock={() => toggleLock(index)}
+                    activeFormat={activeFormat}
+                  />
+                </div>
+              )}
             </div>
           </div>
         ))}
