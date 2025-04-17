@@ -34,7 +34,7 @@ const ColorSwatch = ({ color, locked, toggleLock, activeFormat }: ColorSwatchPro
 
   return (
     <div 
-      className="relative flex flex-col items-center justify-center h-full w-full transition-all duration-300"
+      className="relative flex flex-col items-center justify-center h-full w-full transition-all duration-300 animate-fade-in"
       style={{ 
         backgroundColor: color, 
         color: contrastColor
