@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import ColorSwatch from '@/components/ColorSwatch';
 import PaletteControls from '@/components/PaletteControls';
@@ -28,6 +29,7 @@ const Index = () => {
       
       const randomColors = generateRandomPalette(newColors.length);
       
+      // Only change unlocked colors
       return newColors.map((color, index) => {
         return lockedColors[index] ? color : randomColors[index];
       });

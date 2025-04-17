@@ -13,13 +13,19 @@ interface ColorSwatchProps {
 
 const ColorSwatch = ({ color, locked, toggleLock, activeFormat }: ColorSwatchProps) => {
   const [copied, setCopied] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const contrastColor = getContrastColor(color);
   const formattedColor = getColorInFormat(color, activeFormat);
+  
+  // Convert HEX to uppercase if the format is HEX
+  const displayColor = activeFormat === ColorFormat.HEX 
+    ? formattedColor.toUpperCase()
+    : formattedColor;
   
   const copyToClipboard = () => {
     navigator.clipboard.writeText(formattedColor);
     setCopied(true);
-    toast.success(`${formattedColor} copied to clipboard!`);
+    toast.success(`${displayColor} copied to clipboard!`);
     
     setTimeout(() => {
       setCopied(false);
@@ -33,6 +39,8 @@ const ColorSwatch = ({ color, locked, toggleLock, activeFormat }: ColorSwatchPro
         backgroundColor: color, 
         color: contrastColor
       }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <div className="absolute top-4 right-4 flex gap-2">
         <button
@@ -51,8 +59,19 @@ const ColorSwatch = ({ color, locked, toggleLock, activeFormat }: ColorSwatchPro
         </button>
       </div>
       
+      {/* Lock icon overlay when hovering */}
+      {isHovered && !locked && (
+        <div 
+          className="absolute inset-0 flex items-center justify-center bg-black/20 cursor-pointer transition-all duration-200"
+          onClick={toggleLock}
+          aria-label="Lock this color"
+        >
+          <Lock size={48} className="opacity-80" />
+        </div>
+      )}
+      
       <div className="text-center">
-        <h2 className="text-4xl font-bold mb-2">{formattedColor}</h2>
+        <h2 className="text-4xl font-bold mb-2">{displayColor}</h2>
         <p className="text-sm opacity-80">{activeFormat}</p>
       </div>
     </div>
