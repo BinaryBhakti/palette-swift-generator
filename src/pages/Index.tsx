@@ -5,6 +5,7 @@ import PaletteControls from '@/components/PaletteControls';
 import Header from '@/components/Header';
 import ExportPalette from '@/components/ExportPalette';
 import { ColorFormat, generateRandomPalette } from '@/utils/colorUtils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const DEFAULT_PALETTE_SIZE = 5;
 
@@ -15,6 +16,7 @@ const Index = () => {
   const [activeFormat, setActiveFormat] = useState<ColorFormat>(ColorFormat.HEX);
   const [exportOpen, setExportOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const initialColors = generateRandomPalette(DEFAULT_PALETTE_SIZE);
@@ -35,12 +37,10 @@ const Index = () => {
     
     setNextColors(newColors);
     
-    // Ensure animation timeout is longer than the longest animation + delay
-    // The longest animation will be the last swatch: (75ms * 4) + 500ms = 800ms
     setTimeout(() => {
       setColors(newColors);
       setIsAnimating(false);
-    }, 600); // Increased from 500ms to ensure all animations complete
+    }, 600);
   }, [colors, lockedColors, isAnimating]);
 
   const toggleLock = (index: number) => {
@@ -69,22 +69,26 @@ const Index = () => {
   }, [generateNewPalette]);
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
+    <div className="relative min-h-screen w-full overflow-hidden flex flex-col">
       <Header />
       
-      <div className="flex h-full">
+      <div className={`flex ${isMobile ? 'flex-col h-[500px]' : 'h-full flex-row'} flex-1`}>
         {colors.map((color, index) => (
           <div 
             key={`${color}-${index}`}
-            className="flex-1 h-full relative overflow-hidden"
+            className={`relative ${isMobile ? 'w-full h-full' : 'flex-1 h-full'} overflow-hidden`}
           >
             {/* Current color swatch */}
             <div 
-              className={`absolute top-0 left-0 h-full w-full transition-transform duration-500 ease-out ${
-                isAnimating && !lockedColors[index] ? '-translate-y-full' : 'translate-y-0'
+              className={`absolute ${isMobile ? 'left-0 top-0 w-full' : 'top-0 left-0 h-full w-full'} 
+                transition-transform duration-500 ease-out ${
+                isMobile 
+                  ? isAnimating && !lockedColors[index] ? '-translate-x-full' : 'translate-x-0'
+                  : isAnimating && !lockedColors[index] ? '-translate-y-full' : 'translate-y-0'
               }`}
               style={{
-                transitionDelay: `${index * 50}ms` // Reduced delay to prevent animation cutting off
+                transitionDelay: `${index * 50}ms`,
+                height: isMobile ? '100%' : '100%'
               }}
             >
               <ColorSwatch 
@@ -97,11 +101,15 @@ const Index = () => {
             
             {/* Next color swatch */}
             <div 
-              className={`absolute top-full left-0 h-full w-full transition-transform duration-500 ease-out ${
-                isAnimating && !lockedColors[index] ? '-translate-y-full' : 'translate-y-0'
+              className={`absolute ${isMobile ? 'left-full top-0 w-full' : 'top-full left-0 h-full w-full'}
+                transition-transform duration-500 ease-out ${
+                isMobile
+                  ? isAnimating && !lockedColors[index] ? '-translate-x-full' : 'translate-x-0'
+                  : isAnimating && !lockedColors[index] ? '-translate-y-full' : 'translate-y-0'
               }`}
               style={{
-                transitionDelay: `${index * 50}ms` // Reduced delay to prevent animation cutting off
+                transitionDelay: `${index * 50}ms`,
+                height: isMobile ? '100%' : '100%'
               }}
             >
               <ColorSwatch 
