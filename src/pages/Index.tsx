@@ -38,7 +38,7 @@ const Index = () => {
     setTimeout(() => {
       setColors(newColors);
       setIsAnimating(false);
-    }, 800); // Increased duration to account for sequential animations
+    }, 500); // Reduced animation timeout from 800 to 500ms
   }, [colors, lockedColors, isAnimating]);
 
   const toggleLock = (index: number) => {
@@ -78,11 +78,11 @@ const Index = () => {
           >
             {/* Current color swatch */}
             <div 
-              className={`absolute top-0 left-0 h-full w-full transition-transform duration-700 ease-in-out ${
+              className={`absolute top-0 left-0 h-full w-full transition-transform duration-500 ease-in-out ${
                 isAnimating && !lockedColors[index] ? '-translate-y-full' : 'translate-y-0'
               }`}
               style={{
-                transitionDelay: `${index * 100}ms`
+                transitionDelay: `${index * 75}ms` // Reduced delay from 100ms to 75ms
               }}
             >
               <ColorSwatch 
@@ -95,11 +95,11 @@ const Index = () => {
             
             {/* Next color swatch */}
             <div 
-              className={`absolute top-full left-0 h-full w-full transition-transform duration-700 ease-in-out ${
+              className={`absolute top-full left-0 h-full w-full transition-transform duration-500 ease-in-out ${
                 isAnimating && !lockedColors[index] ? '-translate-y-full' : 'translate-y-0'
               }`}
               style={{
-                transitionDelay: `${index * 100}ms`
+                transitionDelay: `${index * 75}ms` // Reduced delay from 100ms to 75ms
               }}
             >
               <ColorSwatch 
@@ -134,3 +134,4 @@ const Index = () => {
 };
 
 export default Index;
+
