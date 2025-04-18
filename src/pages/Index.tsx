@@ -35,10 +35,12 @@ const Index = () => {
     
     setNextColors(newColors);
     
+    // Ensure animation timeout is longer than the longest animation + delay
+    // The longest animation will be the last swatch: (75ms * 4) + 500ms = 800ms
     setTimeout(() => {
       setColors(newColors);
       setIsAnimating(false);
-    }, 500); // Reduced animation timeout from 800 to 500ms
+    }, 600); // Increased from 500ms to ensure all animations complete
   }, [colors, lockedColors, isAnimating]);
 
   const toggleLock = (index: number) => {
@@ -78,11 +80,11 @@ const Index = () => {
           >
             {/* Current color swatch */}
             <div 
-              className={`absolute top-0 left-0 h-full w-full transition-transform duration-500 ease-in-out ${
+              className={`absolute top-0 left-0 h-full w-full transition-transform duration-500 ease-out ${
                 isAnimating && !lockedColors[index] ? '-translate-y-full' : 'translate-y-0'
               }`}
               style={{
-                transitionDelay: `${index * 75}ms` // Reduced delay from 100ms to 75ms
+                transitionDelay: `${index * 50}ms` // Reduced delay to prevent animation cutting off
               }}
             >
               <ColorSwatch 
@@ -95,11 +97,11 @@ const Index = () => {
             
             {/* Next color swatch */}
             <div 
-              className={`absolute top-full left-0 h-full w-full transition-transform duration-500 ease-in-out ${
+              className={`absolute top-full left-0 h-full w-full transition-transform duration-500 ease-out ${
                 isAnimating && !lockedColors[index] ? '-translate-y-full' : 'translate-y-0'
               }`}
               style={{
-                transitionDelay: `${index * 75}ms` // Reduced delay from 100ms to 75ms
+                transitionDelay: `${index * 50}ms` // Reduced delay to prevent animation cutting off
               }}
             >
               <ColorSwatch 
@@ -134,4 +136,3 @@ const Index = () => {
 };
 
 export default Index;
-
