@@ -102,8 +102,8 @@ const Index = () => {
               className={`absolute inset-0 transition-transform duration-500 ease-out ${
                 isAnimating && !lockedColors[index] 
                   ? isMobile 
-                    ? '-translate-x-full' 
-                    : '-translate-y-full'
+                    ? 'translate-x-0' 
+                    : 'translate-y-0'
                   : isMobile 
                     ? 'translate-x-full'
                     : 'translate-y-full'
