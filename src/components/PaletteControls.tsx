@@ -3,6 +3,7 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Shuffle, Download, Share2 } from 'lucide-react';
 import { ColorFormat } from '@/utils/colorUtils';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface PaletteControlsProps {
   onGenerate: () => void;
@@ -17,6 +18,8 @@ const PaletteControls = ({
   activeFormat,
   setActiveFormat,
 }: PaletteControlsProps) => {
+  const isMobile = useIsMobile();
+  
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.code === 'Space') {
       onGenerate();
@@ -31,16 +34,16 @@ const PaletteControls = ({
   }, [onGenerate]);
 
   return (
-    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 backdrop-blur-md text-white rounded-full px-6 py-3 flex items-center gap-4 z-10">
+    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-black/50 backdrop-blur-md text-white rounded-full px-3 sm:px-6 py-3 flex items-center gap-2 sm:gap-4 z-10 max-w-[95vw] overflow-x-auto">
       <Button
         variant="ghost"
-        size="sm"
+        size={isMobile ? "icon" : "sm"}
         onClick={onGenerate}
-        className="flex items-center gap-2 hover:bg-white/20"
+        className="flex items-center gap-2 hover:bg-white/20 whitespace-nowrap"
       >
         <Shuffle className="h-4 w-4" />
-        <span>Generate</span>
-        <kbd className="bg-black/30 px-2 py-0.5 text-xs rounded">Space</kbd>
+        <span className={isMobile ? "sr-only" : ""}>Generate</span>
+        {!isMobile && <kbd className="bg-black/30 px-2 py-0.5 text-xs rounded">Space</kbd>}
       </Button>
       
       <div className="h-6 w-px bg-white/20" />
@@ -76,21 +79,21 @@ const PaletteControls = ({
       
       <Button
         variant="ghost"
-        size="sm"
+        size={isMobile ? "icon" : "sm"}
         onClick={onExport}
-        className="flex items-center gap-2 hover:bg-white/20"
+        className="flex items-center gap-2 hover:bg-white/20 whitespace-nowrap"
       >
         <Download className="h-4 w-4" />
-        <span>Export</span>
+        <span className={isMobile ? "sr-only" : ""}>Export</span>
       </Button>
       
       <Button
         variant="ghost"
-        size="sm"
-        className="flex items-center gap-2 hover:bg-white/20"
+        size={isMobile ? "icon" : "sm"}
+        className="flex items-center gap-2 hover:bg-white/20 whitespace-nowrap"
       >
         <Share2 className="h-4 w-4" />
-        <span>Share</span>
+        <span className={isMobile ? "sr-only" : ""}>Share</span>
       </Button>
     </div>
   );

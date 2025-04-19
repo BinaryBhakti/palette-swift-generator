@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import ColorSwatch from '@/components/ColorSwatch';
 import PaletteControls from '@/components/PaletteControls';
@@ -67,14 +68,14 @@ const Index = () => {
   }, [generateNewPalette]);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden">
+    <div className="relative min-h-screen w-full overflow-hidden flex flex-col">
       <Header />
       
-      <div className={`flex ${isMobile ? 'flex-col h-[calc(100vh-4rem)]' : 'h-full'}`}>
+      <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} flex-1 ${isMobile ? 'pt-16' : ''}`}>
         {colors.map((color, index) => (
           <div 
             key={`${color}-${index}`}
-            className={`${isMobile ? 'h-full flex-1' : 'flex-1 h-full'} relative overflow-hidden`}
+            className={`${isMobile ? 'h-1/5' : 'h-full'} relative overflow-hidden flex-1`}
           >
             <div 
               className={`absolute inset-0 transition-transform duration-500 ease-out ${
@@ -85,6 +86,7 @@ const Index = () => {
                   : 'translate-x-0 translate-y-0'
               }`}
               style={{
+                backgroundColor: color,
                 transitionDelay: `${index * 50}ms`
               }}
             >
@@ -107,6 +109,7 @@ const Index = () => {
                     : 'translate-y-full'
               }`}
               style={{
+                backgroundColor: nextColors[index],
                 transitionDelay: `${index * 50}ms`
               }}
             >
@@ -133,10 +136,6 @@ const Index = () => {
         setOpen={setExportOpen}
         colors={colors}
       />
-      
-      <div className="absolute bottom-0 w-full text-center text-xs opacity-60 pb-1">
-        Press space bar to generate a new palette
-      </div>
     </div>
   );
 };
