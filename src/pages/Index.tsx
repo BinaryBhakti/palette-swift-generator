@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import ColorSwatch from '@/components/ColorSwatch';
 import PaletteControls from '@/components/PaletteControls';
@@ -75,7 +74,7 @@ const Index = () => {
         {colors.map((color, index) => (
           <div 
             key={`${color}-${index}`}
-            className={`${isMobile ? 'h-1/5' : 'h-full'} relative overflow-hidden flex-1`}
+            className={`${isMobile ? 'h-1/5' : ''} relative overflow-hidden flex-1`}
           >
             <div 
               className={`absolute inset-0 transition-transform duration-500 ease-out ${
