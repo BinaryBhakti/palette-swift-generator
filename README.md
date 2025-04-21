@@ -1,6 +1,6 @@
 # Palette Swift
 
-[Live Demo](https://paletteswift.netlify.app/) (Note: Live demo might not reflect the latest gradient feature yet)
+[Live Demo](https://paletteswift.netlify.app/)
 
 ## Description
 
