@@ -22,3 +22,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Build artifacts & Temp Files
+dist
+dist-ssr
+*.local
+__pycache__/
+
+# Tooling/Backup specific
+.specstory/
+git-backup/
+
