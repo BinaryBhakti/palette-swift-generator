@@ -1,0 +1,17 @@
+fix: Correct height calculation for desktop swatch columns|1745065411|1745066480
+Fix: Mobile sliding animation|1745026736|1745066480
+Fix mobile and desktop display issues|1745025687|1745066480
+feat: Add mobile support for color swatches|1745025328|1745066480
+Reverted to commit 05f6844c7df32c30889634a8e5c3ecc42622c714|1745003359|1745066480
+Reverted to commit 8a061ef2c3f0d49089c2aec8e392f24164f7b697|1745003349|1745066480
+feat: Implement mobile support|1745003025|1745066480
+Fix color swatch animation|1745001751|1745066480
+Fix: Speed up animation|1745001628|1745066480
+Refactor: Improve palette generation animation|1745001529|1745066480
+Refactor: Improve palette generation animation|1744998117|1745066480
+Reverted to commit 36af65dad2380afbbf28acc434190901bcb9f8b4|1744867589|1745066480
+Refactor: Improve palette generation animation|1744867305|1745066480
+feat: Improve UI and add features|1744866800|1745066480
+feat: Improve color swatch and generation logic|1744866495|1745066480
+Add coolors.co clone|1744866073|1745066479
+Use tech stack vite_react_shadcn_ts|1744865915|1745066475 
