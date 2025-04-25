@@ -24,7 +24,7 @@ const Header = () => {
   const getPageTitle = () => {
     switch (location.pathname) {
       case '/':
-        return 'HueCraft';
+        return 'Palette Swift';
       case '/palette':
         return 'Palette Generator';
       case '/gradient':
@@ -36,7 +36,7 @@ const Header = () => {
       case '/contrast':
         return 'Contrast Checker';
       default:
-        return 'HueCraft';
+        return 'Palette Swift';
     }
   };
   
@@ -176,8 +176,8 @@ const Header = () => {
         <Link to="/" className="flex items-center gap-2 group">
           <Palette className="h-6 w-6 text-white group-hover:text-primary transition-colors" />
           <div>
-            <h1 className="font-bold text-xl group-hover:text-primary transition-colors">HueCraft</h1>
-            <p className="text-xs text-white/70">Color tools suite</p>
+            <h1 className="font-bold text-xl group-hover:text-primary transition-colors">Palette Swift</h1>
+            <p className="text-xs text-white/70">Color Palette Generator</p>
           </div>
         </Link>
         
@@ -254,7 +254,7 @@ const Header = () => {
             <DialogHeader>
               <DialogTitle className="text-xl font-bold">How to Use</DialogTitle>
               <DialogDescription>
-                Tools and features available in HueCraft
+                Tools and features available in Palette Swift
               </DialogDescription>
             </DialogHeader>
             

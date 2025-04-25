@@ -104,9 +104,9 @@ export default function Landing() {
             className="mb-16"
           >
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl">
-              <span className="block text-white mb-2">HueCraft</span>
+              <span className="block text-white mb-2">Palette Swift</span>
               <span className="block bg-gradient-to-r from-purple-400 via-pink-500 to-amber-500 bg-clip-text text-transparent">
-                Color Tools Suite
+                Color Palette Generator
               </span>
             </h1>
             <p className="mt-6 text-xl text-gray-300 sm:max-w-3xl sm:mx-auto">
@@ -169,7 +169,7 @@ export default function Landing() {
           transition={{ duration: 0.5, delay: 0.8 }}
         >
           <div className="bg-gray-800/70 backdrop-blur-md rounded-2xl p-8 shadow-lg ring-1 ring-white/10">
-            <h2 className="mb-6 text-center text-3xl font-bold text-white">Why Choose HueCraft?</h2>
+            <h2 className="mb-6 text-center text-3xl font-bold text-white">Why Choose Palette Swift?</h2>
             <div className="grid gap-8 md:grid-cols-3">
               <div className="text-center">
                 <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-purple-600/30">
