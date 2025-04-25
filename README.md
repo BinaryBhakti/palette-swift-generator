@@ -10,8 +10,6 @@
     <a href="#features">Features</a> •
     <a href="#tools">Tools</a> •
     <a href="#setup-instructions">Setup</a> •
-    <a href="#usage">Usage</a> •
-    <a href="#contributing">Contributing</a>
 </div>
 
 ## Description
